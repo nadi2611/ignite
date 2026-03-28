@@ -1,0 +1,76 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : []
+  },
+  "identifier" : "3A5B9C2D-1E4F-7890-ABCD-EF1234567890",
+  "nonRenewingSubscriptions" : [],
+  "products" : [],
+  "settings" : {
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "USA",
+    "_storeKitErrors" : [],
+    "_timeRate" : 1
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21370099",
+      "localizations" : [],
+      "name" : "Ignite Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "9.99",
+          "familySharable" : false,
+          "groupNumber" : 1,
+          "internalID" : "AA1B2C3D-4E5F-6789-ABCD-000000000001",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Unlimited likes, AI features, Voice Intro",
+              "displayName" : "Spark",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.nnajjar.ignite.spark.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Spark Monthly",
+          "subscriptionGroupID" : "21370099",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "19.99",
+          "familySharable" : false,
+          "groupNumber" : 2,
+          "internalID" : "AA1B2C3D-4E5F-6789-ABCD-000000000002",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "All features including Family Mode and Priority Queue",
+              "displayName" : "Ignite",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.nnajjar.ignite.ignite.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Ignite Monthly",
+          "subscriptionGroupID" : "21370099",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}
