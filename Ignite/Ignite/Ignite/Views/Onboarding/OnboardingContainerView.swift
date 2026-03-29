@@ -41,12 +41,20 @@ struct OnboardingContainerView: View {
             // Steps
             Group {
                 switch vm.step {
-                case 0: OnboardingBirthdayView(vm: vm)
-                case 1: OnboardingGenderView(vm: vm)
-                case 2: OnboardingCityView(vm: vm)
-                case 3: OnboardingReligionView(vm: vm)
-                case 4: OnboardingInterestsView(vm: vm)
-                case 5: OnboardingPhotoView(vm: vm)
+                case 0: OnboardingLegalView(vm: vm)
+                case 1: OnboardingBirthdayView(vm: vm)
+                case 2: OnboardingGenderView(vm: vm)
+                case 3: OnboardingOriginView(vm: vm)
+                case 4: OnboardingHeightView(vm: vm)
+                case 5: OnboardingReligionView(vm: vm)
+                case 6: OnboardingReligiosityView(vm: vm)
+                case 7: OnboardingMarriageView(vm: vm)
+                case 8: OnboardingEducationView(vm: vm)
+                case 9: OnboardingSmokesView(vm: vm)
+                case 10: OnboardingPraysView(vm: vm)
+                case 11: OnboardingFastsView(vm: vm)
+                case 12: OnboardingInterestsView(vm: vm)
+                case 13: OnboardingPhotoView(vm: vm)
                 default: EmptyView()
                 }
             }

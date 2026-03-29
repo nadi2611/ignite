@@ -88,14 +88,60 @@ struct ChatView: View {
                     .clipShape(Circle())
 
                     VStack(alignment: .leading, spacing: 1) {
-                        Text(user.name)
-                            .font(.headline)
+                        HStack(spacing: 4) {
+                            Text(user.name)
+                                .font(.headline)
+                            if user.isVerified == true {
+                                VerifiedBadge(size: 14)
+                            }
+                        }
                         Text(user.city)
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
                 }
             }
+            
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button {
+                        Task {
+                            try? await SafetyService.shared.unmatch(otherUID: user.id ?? "")
+                            dismiss()
+                        }
+                    } label: {
+                        Label(L("unmatch_user"), systemImage: "person.fill.xmark")
+                    }
+
+                    Button(role: .destructive) {
+                        Task {
+                            try? await SafetyService.shared.block(userUID: user.id ?? "")
+                            dismiss()
+                        }
+                    } label: {
+                        Label(L("block_user"), systemImage: "hand.raised.fill")
+                    }
+                    
+                    Menu(L("report_title")) {
+                        Button(L("report_photos")) { reportUser(reason: L("report_photos")) }
+                        Button(L("report_fake")) { reportUser(reason: L("report_fake")) }
+                        Button(L("report_harassment")) { reportUser(reason: L("report_harassment")) }
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .font(.body.bold())
+                        .foregroundColor(IgniteTheme.textPrimary)
+                }
+            }
+        }
+    }
+    
+    @Environment(\.dismiss) private var dismiss
+
+    private func reportUser(reason: String) {
+        Task {
+            try? await SafetyService.shared.report(userUID: user.id ?? "", reason: reason)
+            dismiss()
         }
     }
 

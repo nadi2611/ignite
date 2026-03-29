@@ -10,9 +10,11 @@ class AuthViewModel: ObservableObject {
     @Published var currentUser: User? = nil
     @Published var errorMessage: String = ""
     @Published var isInitializing: Bool = true
+    @Published var verificationID: String? = nil
 
     private let db = Firestore.firestore()
     private var handle: AuthStateDidChangeListenerHandle?
+    private var userListener: ListenerRegistration?
     private var isRegistering: Bool = false
 
     init() {
@@ -37,6 +39,55 @@ class AuthViewModel: ObservableObject {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
             if let error = error {
                 self?.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    func sendOTP(phoneNumber: String, completion: @escaping (Bool) -> Void) {
+        print("DEBUG: Sending OTP to \(phoneNumber)")
+        PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { [weak self] verificationID, error in
+            if let error = error {
+                self?.errorMessage = error.localizedDescription
+                completion(false)
+                return
+            }
+            self?.verificationID = verificationID
+            completion(true)
+        }
+    }
+
+    func verifyOTP(code: String, name: String? = nil) {
+        guard let verificationID = verificationID else {
+            self.errorMessage = "Missing verification ID"
+            return
+        }
+        
+        let credential = PhoneAuthProvider.provider().credential(withVerificationID: verificationID, verificationCode: code)
+        
+        isRegistering = name != nil
+        
+        Auth.auth().signIn(with: credential) { [weak self] result, error in
+            guard let self = self else { return }
+            if let error = error {
+                self.errorMessage = error.localizedDescription
+                return
+            }
+            
+            guard let uid = result?.user.uid else { return }
+            
+            // If registering, create the user doc
+            if let name = name {
+                let newUser = User(id: uid, name: name, age: 0, phoneNumber: result?.user.phoneNumber)
+                DispatchQueue.main.async {
+                    self.currentUser = newUser
+                    self.isLoggedIn = true
+                    self.onboardingComplete = false
+                    self.isRegistering = false
+                    self.isInitializing = false
+                }
+            } else {
+                // If logging in, fetchUser will be called by state listener
+                self.isRegistering = false
             }
         }
     }
@@ -86,27 +137,40 @@ class AuthViewModel: ObservableObject {
     }
 
     func logout() {
+        userListener?.remove()
         NotificationManager.clearFCMToken()
         try? Auth.auth().signOut()
     }
 
+    func deleteAccount() {
+        guard let user = Auth.auth().currentUser, let uid = currentUser?.id else { return }
+        
+        // 1. Delete Firestore data
+        db.collection("users").document(uid).delete()
+        
+        // 2. Delete Auth user
+        user.delete { [weak self] error in
+            if let error = error {
+                self?.errorMessage = error.localizedDescription
+            } else {
+                self?.logout()
+            }
+        }
+    }
+
     private func fetchUser(uid: String) {
-        db.collection("users").document(uid).getDocument { [weak self] snapshot, error in
+        userListener?.remove()
+        userListener = db.collection("users").document(uid).addSnapshotListener { [weak self] snapshot, error in
             guard let self = self else { return }
 
             if let error = error {
-                // Network/Firestore error — keep user logged in
                 print("Firestore error: \(error.localizedDescription)")
                 return
             }
 
             guard let snapshot = snapshot, snapshot.exists else {
-                try? Auth.auth().signOut()
-                DispatchQueue.main.async {
-                    self.isLoggedIn = false
-                    self.onboardingComplete = false
-                    self.currentUser = nil
-                    self.isInitializing = false
+                if self.isLoggedIn && !self.isRegistering {
+                    try? Auth.auth().signOut()
                 }
                 return
             }

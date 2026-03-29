@@ -6,6 +6,7 @@ struct HomeView: View {
     @State private var selectedTab = 0
     @State private var reportTarget: User? = nil
     @State private var showReportSheet = false
+    @State private var isPulsing = false
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -68,14 +69,51 @@ struct HomeView: View {
             HStack {
                 Text("🔥 \(L("app_name"))")
                     .font(.title.bold())
+                    .scaleEffect(isPulsing ? 1.05 : 1.0)
+                    .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: isPulsing)
                 Spacer()
             }
             .padding(.horizontal)
+            .onAppear { isPulsing = true }
 
             Spacer()
 
             if swipeVM.isLoading {
-                ProgressView()
+                VStack(spacing: 20) {
+                    Text("🔥")
+                        .font(.system(size: 60))
+                        .scaleEffect(isPulsing ? 1.2 : 1.0)
+                        .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: isPulsing)
+                    
+                    Text(L("loading_discover"))
+                        .font(.subheadline.bold())
+                        .foregroundColor(.secondary)
+                }
+                .onAppear { isPulsing = true }
+            } else if swipeVM.hasReachedLimit {
+                VStack(spacing: 20) {
+                    Image(systemName: "hourglass.circle.fill")
+                        .font(.system(size: 80))
+                        .foregroundStyle(IgniteTheme.mainGradient)
+                    
+                    Text(L("discover_limit_title"))
+                        .font(.title2.bold())
+                    
+                    Text(L("discover_limit_subtitle"))
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 40)
+                    
+                    Button {
+                        selectedTab = 1 // Go to matches
+                    } label: {
+                        Text(L("tab_matches"))
+                            .primaryButton()
+                    }
+                    .padding(.top, 20)
+                    .padding(.horizontal, 60)
+                }
             } else if swipeVM.users.isEmpty {
                 VStack(spacing: 16) {
                     Text("🔥").font(.system(size: 60))

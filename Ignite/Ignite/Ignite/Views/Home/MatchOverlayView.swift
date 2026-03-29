@@ -11,7 +11,11 @@ struct MatchOverlayView: View {
 
     var body: some View {
         ZStack {
-            Color.black.opacity(0.88).ignoresSafeArea()
+            Rectangle()
+                .fill(.ultraThinMaterial)
+                .ignoresSafeArea()
+            
+            Color.black.opacity(0.4).ignoresSafeArea()
 
             // Confetti layer
             GeometryReader { geo in

@@ -17,10 +17,10 @@ struct PaywallView: View {
                     VStack(spacing: 12) {
                         Text("🔥")
                             .font(.system(size: 60))
-                        Text("Upgrade Ignite")
+                        Text(L("paywall_title"))
                             .font(.system(size: 32, weight: .black))
                             .foregroundColor(.white)
-                        Text("Unlock your perfect match")
+                        Text(L("paywall_subtitle"))
                             .font(.subheadline)
                             .foregroundColor(.white.opacity(0.85))
                     }
@@ -34,7 +34,7 @@ struct PaywallView: View {
                         VStack(spacing: 12) {
                             if store.errorMessage.isEmpty {
                                 ProgressView()
-                                Text("Loading plans...")
+                                Text(L("paywall_loading"))
                                     .font(.subheadline)
                                     .foregroundColor(IgniteTheme.textSecondary)
                             } else {
@@ -90,7 +90,7 @@ struct PaywallView: View {
                                 .background(IgniteTheme.mainGradient)
                                 .cornerRadius(IgniteTheme.buttonRadius)
                         } else {
-                            Text("Continue")
+                            Text(L("onboarding_continue"))
                                 .primaryButton()
                         }
                     }
@@ -102,13 +102,13 @@ struct PaywallView: View {
                     Button {
                         Task { await store.restorePurchases() }
                     } label: {
-                        Text("Restore Purchases")
+                        Text(L("paywall_restore"))
                             .font(.subheadline)
                             .foregroundColor(IgniteTheme.textSecondary)
                     }
 
                     // Legal
-                    Text("Subscription auto-renews monthly. Cancel anytime in App Store settings.")
+                    Text(L("paywall_legal"))
                         .font(.caption2)
                         .foregroundColor(IgniteTheme.textSecondary)
                         .multilineTextAlignment(.center)
@@ -142,13 +142,13 @@ struct PlanCard: View {
     let onTap: () -> Void
 
     var planName: String {
-        product.id == StoreManager.igniteMonthly ? "Ignite 🔥" : "Spark ⚡"
+        product.id == StoreManager.igniteMonthly ? L("paywall_ignite") : L("paywall_spark")
     }
 
     var planSubtitle: String {
         product.id == StoreManager.igniteMonthly
-            ? "All features + Family Mode"
-            : "Unlimited likes + AI features"
+            ? L("paywall_ignite_desc")
+            : L("paywall_spark_desc")
     }
 
     var body: some View {
@@ -159,7 +159,7 @@ struct PlanCard: View {
                         Text(planName)
                             .font(.headline.bold())
                         if isRecommended {
-                            Text("BEST VALUE")
+                            Text(L("paywall_best_value"))
                                 .font(.caption2.bold())
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 8)
@@ -179,7 +179,7 @@ struct PlanCard: View {
                     Text(product.displayPrice)
                         .font(.title3.bold())
                         .foregroundColor(IgniteTheme.textPrimary)
-                    Text("per month")
+                    Text(L("paywall_per_month"))
                         .font(.caption)
                         .foregroundColor(IgniteTheme.textSecondary)
                 }
@@ -201,35 +201,33 @@ struct PlanCard: View {
 
 struct FeatureComparisonView: View {
     let features: [(String, String, String, String)] = [
-        ("Daily Likes", "10", "Unlimited", "Unlimited"),
-        ("See Who Liked You", "❌", "✅", "✅"),
-        ("AI Compatibility", "❌", "✅", "✅"),
-        ("AI Ice Breakers", "❌", "✅", "✅"),
-        ("Voice Intro", "❌", "✅", "✅"),
-        ("Undo Swipe", "❌", "✅", "✅"),
-        ("Weekly Boosts", "0", "1", "3"),
-        ("Read Receipts", "❌", "❌", "✅"),
-        ("Family Mode", "❌", "❌", "✅"),
-        ("Priority Queue", "❌", "❌", "✅"),
+        (L("paywall_feature_likes"), "10", L("common_unlimited"), L("common_unlimited")),
+        (L("paywall_feature_see_likes"), "❌", "✅", "✅"),
+        (L("paywall_feature_ai"), "❌", "✅", "✅"),
+        (L("paywall_feature_voice"), "❌", "✅", "✅"),
+        (L("paywall_feature_boosts"), "0", "1", "3"),
+        (L("paywall_feature_receipts"), "❌", "❌", "✅"),
+        (L("paywall_feature_family"), "❌", "❌", "✅"),
+        (L("paywall_feature_priority"), "❌", "❌", "✅"),
     ]
 
     var body: some View {
         VStack(spacing: 0) {
             // Header
             HStack {
-                Text("Features")
+                Text(L("paywall_features_title"))
                     .font(.caption.bold())
                     .foregroundColor(IgniteTheme.textSecondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Text("Free")
+                Text(L("plan_free"))
                     .font(.caption.bold())
                     .foregroundColor(IgniteTheme.textSecondary)
                     .frame(width: 60, alignment: .center)
-                Text("Spark")
+                Text(L("plan_spark"))
                     .font(.caption.bold())
                     .foregroundColor(IgniteTheme.secondary)
                     .frame(width: 60, alignment: .center)
-                Text("Ignite")
+                Text(L("plan_ignite"))
                     .font(.caption.bold())
                     .foregroundColor(IgniteTheme.primary)
                     .frame(width: 60, alignment: .center)

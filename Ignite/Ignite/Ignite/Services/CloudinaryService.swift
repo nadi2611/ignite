@@ -6,7 +6,9 @@ struct CloudinaryService {
     static let uploadPreset = "ignite_profiles"
 
     static func uploadImage(_ image: UIImage) async throws -> String {
-        guard let imageData = image.jpegData(compressionQuality: 0.7) else {
+        // Resize to max 800px and compress to 0.5 for fast uploads
+        let resized = resizeImage(image: image, targetSize: CGSize(width: 800, height: 800))
+        guard let imageData = resized.jpegData(compressionQuality: 0.5) else {
             throw URLError(.badURL)
         }
 
@@ -42,5 +44,19 @@ struct CloudinaryService {
         }
 
         return secureURL
+    }
+
+    private static func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+        let scaleFactor = min(widthRatio, heightRatio)
+        if scaleFactor >= 1 { return image }
+        let newSize = CGSize(width: size.width * scaleFactor, height: size.height * scaleFactor)
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: CGRect(origin: .zero, size: newSize))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage ?? image
     }
 }

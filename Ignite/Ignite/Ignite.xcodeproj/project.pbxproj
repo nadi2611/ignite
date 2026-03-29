@@ -11,29 +11,24 @@
 		FD3557212F774439006DEEC2 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FD3557202F774439006DEEC2 /* FirebaseFirestore */; };
 		FD3557232F774439006DEEC2 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = FD3557222F774439006DEEC2 /* FirebaseStorage */; };
 		FD35574E2F776A66006DEEC2 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = FD35574D2F776A66006DEEC2 /* FirebaseMessaging */; };
+		FD35575F2F78872F006DEEC2 /* Storekit.storekit in Resources */ = {isa = PBXBuildFile; fileRef = FD35575E2F78872F006DEEC2 /* Storekit.storekit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		FD3556DE2F77378C006DEEC2 /* Ignite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ignite.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD35575E2F78872F006DEEC2 /* Storekit.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = Storekit.storekit; path = Ignite/Storekit.storekit; sourceTree = "<group>"; };
+		FD3557622F788B34006DEEC2 /* Storekit.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = Storekit.storekit; path = Ignite/Storekit.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		FD35573E2F775C6D006DEEC2 /* Exceptions for "Ignite" folder in "Ignite" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Ignite.storekit,
-			);
-			target = FD3556DD2F77378C006DEEC2 /* Ignite */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FD3556E02F77378C006DEEC2 /* Ignite */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				FD35573E2F775C6D006DEEC2 /* Exceptions for "Ignite" folder in "Ignite" target */,
-			);
 			path = Ignite;
+			sourceTree = "<group>";
+		};
+		FD3557712F795BF7006DEEC2 /* public */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = public;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -56,9 +51,12 @@
 		FD3556D52F77378C006DEEC2 = {
 			isa = PBXGroup;
 			children = (
+				FD35575E2F78872F006DEEC2 /* Storekit.storekit */,
+				FD3557622F788B34006DEEC2 /* Storekit.storekit */,
 				FD3556E02F77378C006DEEC2 /* Ignite */,
 				FD35574C2F776A66006DEEC2 /* Frameworks */,
 				FD3556DF2F77378C006DEEC2 /* Products */,
+				FD3557712F795BF7006DEEC2 /* public */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,6 +92,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				FD3556E02F77378C006DEEC2 /* Ignite */,
+				FD3557712F795BF7006DEEC2 /* public */,
 			);
 			name = Ignite;
 			packageProductDependencies = (
@@ -148,6 +147,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD35575F2F78872F006DEEC2 /* Storekit.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

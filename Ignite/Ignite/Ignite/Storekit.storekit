@@ -1,11 +1,21 @@
 {
   "appPolicies" : {
     "eula" : "",
-    "policies" : []
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
   },
-  "identifier" : "3A5B9C2D-1E4F-7890-ABCD-EF1234567890",
-  "nonRenewingSubscriptions" : [],
-  "products" : [],
+  "identifier" : "BEB8DF12",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
   "settings" : {
     "_askToBuyEnabled" : false,
     "_billingGracePeriodEnabled" : false,
@@ -15,26 +25,34 @@
     "_locale" : "en_US",
     "_renewalBillingIssuesEnabled" : false,
     "_storefront" : "USA",
-    "_storeKitErrors" : [],
-    "_timeRate" : 1
+    "_storeKitErrors" : [
+
+    ],
+    "_timeRate" : 0
   },
   "subscriptionGroups" : [
     {
-      "id" : "21370099",
-      "localizations" : [],
-      "name" : "Ignite Premium",
+      "id" : "92A28B89",
+      "localizations" : [
+
+      ],
+      "name" : "Renew Subscription Plans",
       "subscriptions" : [
         {
-          "adHocOffers" : [],
-          "codeOffers" : [],
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
           "displayPrice" : "9.99",
-          "familySharable" : false,
+          "familyShareable" : false,
           "groupNumber" : 1,
-          "internalID" : "AA1B2C3D-4E5F-6789-ABCD-000000000001",
+          "internalID" : "1CB94E88",
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Unlimited likes, AI features, Voice Intro",
+              "description" : "Unlimited likes and AI features",
               "displayName" : "Spark",
               "locale" : "en_US"
             }
@@ -42,20 +60,27 @@
           "productID" : "com.nnajjar.ignite.spark.monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Spark Monthly",
-          "subscriptionGroupID" : "21370099",
-          "type" : "RecurringSubscription"
+          "subscriptionGroupID" : "92A28B89",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         },
         {
-          "adHocOffers" : [],
-          "codeOffers" : [],
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
           "displayPrice" : "19.99",
-          "familySharable" : false,
-          "groupNumber" : 2,
-          "internalID" : "AA1B2C3D-4E5F-6789-ABCD-000000000002",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "4FBD782A",
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "All features including Family Mode and Priority Queue",
+              "description" : "All features including priority",
               "displayName" : "Ignite",
               "locale" : "en_US"
             }
@@ -63,8 +88,11 @@
           "productID" : "com.nnajjar.ignite.ignite.monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Ignite Monthly",
-          "subscriptionGroupID" : "21370099",
-          "type" : "RecurringSubscription"
+          "subscriptionGroupID" : "92A28B89",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         }
       ]
     }

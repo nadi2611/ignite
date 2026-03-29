@@ -29,46 +29,54 @@ class ChatListViewModel: ObservableObject {
     private func fetchMatches() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
 
-        listener = db.collection("matches")
-            .whereField("users", arrayContains: uid)
-            .addSnapshotListener { [weak self] snapshot, _ in
-                guard let self, let docs = snapshot?.documents else {
-                    DispatchQueue.main.async { self?.isLoading = false }
-                    return
-                }
+        Task {
+            let blockedUIDs = (try? await SafetyService.shared.getBlockedUIDs()) ?? []
 
-                let group = DispatchGroup()
-                var items: [MatchItem] = []
-
-                for doc in docs {
-                    let matchId = doc.documentID
-                    let data = doc.data()
-                    let users = data["users"] as? [String] ?? []
-                    let otherUID = users.first { $0 != uid } ?? ""
-                    let lastMessage = data["lastMessage"] as? String ?? ""
-                    let lastMessageAt = (data["lastMessageAt"] as? Timestamp)?.dateValue()
-
-                    group.enter()
-                    self.db.collection("users").document(otherUID).getDocument { snap, _ in
-                        if let user = try? snap?.data(as: User.self) {
-                            items.append(MatchItem(
-                                id: matchId,
-                                user: user,
-                                lastMessage: lastMessage,
-                                lastMessageAt: lastMessageAt
-                            ))
+            DispatchQueue.main.async {
+                self.listener = self.db.collection("matches")
+                    .whereField("users", arrayContains: uid)
+                    .addSnapshotListener { [weak self] snapshot, _ in
+                        guard let self, let docs = snapshot?.documents else {
+                            DispatchQueue.main.async { self?.isLoading = false }
+                            return
                         }
-                        group.leave()
-                    }
-                }
 
-                group.notify(queue: .main) {
-                    self.matchItems = items.sorted {
-                        ($0.lastMessageAt ?? .distantPast) > ($1.lastMessageAt ?? .distantPast)
+                        let group = DispatchGroup()
+                        var items: [MatchItem] = []
+
+                        for doc in docs {
+                            let matchId = doc.documentID
+                            let data = doc.data()
+                            let users = data["users"] as? [String] ?? []
+                            let otherUID = users.first { $0 != uid } ?? ""
+                            let lastMessage = data["lastMessage"] as? String ?? ""
+                            let lastMessageAt = (data["lastMessageAt"] as? Timestamp)?.dateValue()
+
+                            if blockedUIDs.contains(otherUID) { continue }
+
+                            group.enter()
+                            self.db.collection("users").document(otherUID).getDocument { snap, _ in
+                                if let user = try? snap?.data(as: User.self) {
+                                    items.append(MatchItem(
+                                        id: matchId,
+                                        user: user,
+                                        lastMessage: lastMessage,
+                                        lastMessageAt: lastMessageAt
+                                    ))
+                                }
+                                group.leave()
+                            }
+                        }
+
+                        group.notify(queue: .main) {
+                            self.matchItems = items.sorted {
+                                ($0.lastMessageAt ?? .distantPast) > ($1.lastMessageAt ?? .distantPast)
+                            }
+                            self.isLoading = false
+                        }
                     }
-                    self.isLoading = false
-                }
             }
+        }
     }
 }
 
